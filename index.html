@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rejection OS — Track. Learn. Own it.</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f0;
+    --blush: #f5e6e0;
+    --lavender: #e8e4f0;
+    --sage: #e2ece6;
+    --dusty-rose: #d4a8a0;
+    --muted-violet: #9b8faa;
+    --terracotta: #c4785a;
+    --slate: #4a4558;
+    --ink: #2d2a38;
+    --soft-red: #e07070;
+    --border: rgba(74, 69, 88, 0.12);
+    --mono: 'DM Mono', monospace;
+    --serif: 'Instrument Serif', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(250, 246, 240, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span.crossed {
+    color: #9b9b9b;
+    text-decoration: line-through;
+    text-decoration-color: var(--soft-red);
+    text-decoration-thickness: 2px;
+  }
+  .nav-logo span.os { color: var(--ink); font-weight: 500; }
+
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.75rem;
+    color: var(--slate); text-decoration: none; letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .btn-nav {
+    font-family: var(--mono); font-size: 0.75rem;
+    background: var(--cream); color: var(--black);
+    border: none; padding: 0.5rem 1.25rem;
+    border-radius: 2px; cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+
+  /* ── PAGE TOGGLE ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ══════════════════════════════
+     LANDING PAGE
+  ══════════════════════════════ */
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    background: var(--cream);
+  }
+
+  .ascii-border-top {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--dusty-rose); opacity: 0.6;
+    letter-spacing: 0.1em;
+    position: absolute; top: 5.5rem; left: 0; right: 0;
+    text-align: center;
+    user-select: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    text-align: center;
+    color: var(--ink);
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .hero-sub {
+    font-family: var(--sans); font-size: 1.05rem;
+    color: var(--slate); line-height: 1.7;
+    max-width: 480px; text-align: center;
+    margin-top: 1.75rem;
+    margin-bottom: 1.0rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+
+  .btn-primary {
+    font-family: var(--mono); font-size: 0.8rem;
+    background: var(--ink); color: var(--cream);
+    border: none; padding: 0.85rem 2rem;
+    border-radius: 2px; cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--terracotta); }
+
+  .btn-secondary {
+    font-family: var(--mono); font-size: 0.8rem;
+    background: transparent; color: var(--slate);
+    border: 1px solid var(--border); padding: 0.85rem 2rem;
+    border-radius: 2px; cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--slate); color: var(--ink); }
+
+  .hero-counter {
+    margin-top: 3.5rem;
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.08em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+  .hero-counter strong { color: var(--soft-red); }
+
+  /* TICKER */
+  .ticker-wrap {
+    background: var(--blush);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden; padding: 0.75rem 0;
+    white-space: nowrap;
+  }
+  .ticker {
+    display: inline-flex; gap: 0;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--slate); padding: 0 2rem;
+    letter-spacing: 0.05em;
+  }
+  .ticker-item span { color: var(--soft-red); margin-right: 0.5rem; }
+
+  /* STATS */
+  .stats-section {
+    background: var(--lavender);
+    padding: 5rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 4px;
+    margin-top: 4rem;
+  }
+
+  .stat-block { text-align: center; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-num em { font-style: normal; color: var(--soft-red); }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 0.5rem;
+  }
+
+  /* HOW IT WORKS */
+  .how-section {
+    padding: 6rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--ink); margin-bottom: 3rem;
+    line-height: 1.15;
+  }
+  .section-title em { font-style: italic; color: var(--terracotta); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .step {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(74,69,88,0.08); }
+
+  .step-num {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--dusty-rose); letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .step-ascii {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); line-height: 1.6;
+    margin-bottom: 1rem; opacity: 0.7;
+  }
+  .step h3 {
+    font-family: var(--serif); font-size: 1.3rem;
+    color: var(--ink); margin-bottom: 0.5rem;
+  }
+  .step p {
+    font-family: var(--sans); font-size: 0.85rem;
+    color: var(--slate); line-height: 1.65; font-weight: 300;
+  }
+
+  /* WALL PREVIEW */
+  .wall-section {
+    background: var(--sage);
+    padding: 5rem 3rem;
+  }
+  .wall-inner { max-width: 1000px; margin: 0 auto; }
+  .wall-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .wall-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .wall-card::before {
+    content: attr(data-round);
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--soft-red); letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block; margin-bottom: 0.75rem;
+  }
+  .wall-card p {
+    font-family: var(--sans); font-size: 0.875rem;
+    color: var(--slate); line-height: 1.7; font-weight: 300;
+    font-style: italic;
+  }
+  .wall-card-meta {
+    margin-top: 1rem;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted-violet);
+  }
+
+  /* WAITLIST */
+  .waitlist-section {
+    padding: 7rem 3rem;
+    text-align: center;
+    background: var(--blush);
+  }
+  .waitlist-ascii {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--dusty-rose);
+    letter-spacing: 0.05em; margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+  .waitlist-form {
+    display: flex; gap: 0.75rem; justify-content: center;
+    flex-wrap: wrap; margin-top: 2rem;
+  }
+  .waitlist-input {
+    font-family: var(--mono); font-size: 0.8rem;
+    background: var(--cream); color: var(--ink);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1.5rem; border-radius: 2px;
+    width: 300px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .waitlist-input:focus { border-color: var(--muted-violet); }
+  .waitlist-input::placeholder { color: var(--muted-violet); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: var(--cream);
+    padding: 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  footer .f-logo {
+    font-family: var(--mono); font-size: 0.9rem;
+  }
+  footer .f-logo .crossed {
+    text-decoration: line-through;
+    text-decoration-color: var(--soft-red);
+    color: #888;
+  }
+  footer p {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: #888; letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════
+     DASHBOARD
+  ══════════════════════════════ */
+  .dashboard {
+    min-height: 100vh;
+    background: var(--cream);
+    padding-top: 5rem;
+  }
+
+  .dash-header {
+    background: var(--lavender);
+    padding: 2.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-greeting {
+    font-family: var(--serif); font-size: 2rem;
+    color: var(--ink);
+  }
+  .dash-greeting em { font-style: italic; color: var(--terracotta); }
+  .dash-sub {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.05em;
+    margin-top: 0.4rem;
+  }
+
+  .dash-body {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 5rem - 7rem);
+  }
+
+  /* sidebar */
+  .dash-sidebar {
+    background: var(--blush);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+  }
+  .sidebar-label {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--muted-violet); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .sidebar-stat {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .sidebar-stat-num {
+    font-family: var(--serif); font-size: 2.5rem;
+    color: var(--ink); line-height: 1;
+  }
+  .sidebar-stat-num.red { color: var(--soft-red); }
+  .sidebar-stat-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted-violet); letter-spacing: 0.08em;
+    margin-top: 0.25rem;
+  }
+
+  .pattern-box {
+    background: var(--sage);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .pattern-box h4 {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--slate); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .pattern-item {
+    font-family: var(--sans); font-size: 0.8rem;
+    color: var(--slate); padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5; font-weight: 300;
+  }
+  .pattern-item:last-child { border-bottom: none; }
+  .pattern-item strong { color: var(--soft-red); font-weight: 500; }
+
+  /* main area */
+  .dash-main { padding: 2rem 2.5rem; }
+
+  .dash-toolbar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .dash-toolbar h2 {
+    font-family: var(--serif); font-size: 1.5rem; color: var(--ink);
+  }
+
+  .btn-log {
+    font-family: var(--mono); font-size: 0.75rem;
+    background: var(--soft-red); color: white;
+    border: none; padding: 0.6rem 1.5rem;
+    border-radius: 2px; cursor: pointer;
+    letter-spacing: 0.03em; transition: background 0.2s;
+  }
+  .btn-log:hover { background: var(--terracotta); }
+
+  .rejection-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .rejection-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    transition: box-shadow 0.2s;
+  }
+  .rejection-card:hover { box-shadow: 0 4px 20px rgba(74,69,88,0.07); }
+
+  .rc-company {
+    font-family: var(--serif); font-size: 1.1rem; color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .rc-role {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted-violet); letter-spacing: 0.05em;
+  }
+  .rc-note {
+    font-family: var(--sans); font-size: 0.82rem;
+    color: var(--slate); margin-top: 0.6rem;
+    font-weight: 300; line-height: 1.6;
+    font-style: italic;
+  }
+  .rc-badge {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem; border-radius: 2px;
+    white-space: nowrap;
+  }
+  .badge-technical { background: var(--lavender); color: var(--muted-violet); }
+  .badge-hr { background: var(--blush); color: var(--dusty-rose); }
+  .badge-system { background: var(--sage); color: #5a8a6a; }
+  .badge-ghosted { background: #f0ece0; color: #8a7a5a; }
+
+  .rc-date {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--dusty-rose); margin-top: 0.4rem;
+    text-align: right;
+  }
+
+  /* mood chart */
+  .mood-section {
+    margin-top: 2rem;
+    background: var(--lavender);
+    border-radius: 4px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .mood-title {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted-violet); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .mood-bars { display: flex; gap: 0.5rem; align-items: flex-end; height: 80px; }
+  .mood-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; flex: 1; }
+  .mood-bar {
+    width: 100%; border-radius: 2px 2px 0 0;
+    transition: height 0.4s ease;
+  }
+  .mood-bar-label {
+    font-family: var(--mono); font-size: 0.55rem;
+    color: var(--muted-violet); text-align: center;
+  }
+
+  /* LOG MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(45, 42, 56, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 200; align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2.5rem;
+    width: 100%; max-width: 520px;
+    animation: fadeUp 0.25s ease;
+  }
+  .modal h3 {
+    font-family: var(--serif); font-size: 1.6rem;
+    color: var(--ink); margin-bottom: 0.25rem;
+  }
+  .modal-sub {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted-violet); letter-spacing: 0.05em;
+    margin-bottom: 1.75rem;
+  }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--slate); letter-spacing: 0.1em;
+    text-transform: uppercase; display: block;
+    margin-bottom: 0.4rem;
+  }
+  .form-input, .form-select, .form-textarea {
+    font-family: var(--mono); font-size: 0.8rem;
+    width: 100%; background: white;
+    border: 1px solid var(--border); color: var(--ink);
+    padding: 0.7rem 1rem; border-radius: 2px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--muted-violet);
+  }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.75rem; }
+  .btn-cancel {
+    font-family: var(--mono); font-size: 0.75rem;
+    background: transparent; color: var(--slate);
+    border: 1px solid var(--border);
+    padding: 0.7rem 1.5rem; border-radius: 2px; cursor: pointer;
+  }
+
+  .cursor-dot-hero {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: #e07070;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.ascii-line-hero {
+  font-family: 'DM Mono', monospace;
+  font-size: 35px;
+  letter-spacing: 0.18em;
+  line-height: 2;
+  color: var(--black);
+  text-align: center;
+  user-select: none;
+}
+.ascii-sub-hero {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--dusty-rose);
+  margin-top: 0.5rem;
+  text-align: center;
+  user-select: none;
+}
+.ascii-border-hero {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--dusty-rose);
+  opacity: 0.4;
+  margin: 0.4rem 0;
+}
+.ascii-char { display: inline-block; transition: color 0.08s, transform 0.12s; }
+.ascii-char.lit { color: #e07070; transform: translateY(-3px); }
+.ascii-char.near { color: #c4785a; transform: translateY(-1.5px); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; } 50% { opacity: 0; }
+  }
+  .cursor { animation: blink 1s step-end infinite; color: var(--soft-red); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .dash-body { grid-template-columns: 1fr; }
+    .dash-sidebar { display: none; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .how-section, .waitlist-section { padding: 4rem 1.5rem; }
+    .stats-section { margin: 2rem 1.5rem; padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <span class="crossed">Rejection</span><span class="os"> OS</span>
+  </div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('landing')">Home</a>
+    <a href="#how">How it works</a>
+    <a href="#wall">Wall</a>
+    <a href="#" onclick="showPage('dashboard')" class="btn-nav">Dashboard →</a>
+  </div>
+</nav>
+
+<!-- ══ LANDING PAGE ══ -->
+<div id="landing" class="page active">
+
+  <!-- HERO -->
+<section class="hero">
+  <div class="ascii-border-top">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div>
+  
+  <!-- ASCII HERO TEXT -->
+  <div class="cursor-dot-hero" id="dot"></div>
+  <div style="text-align:center; padding: 1rem 0; cursor:none;">
+    <div class="ascii-border-hero">· · · · · · · · · · · · · · · · · · · ·</div>
+    <div class="ascii-line-hero" id="line1"></div>
+    <div class="ascii-line-hero" id="line2"></div>
+    <div class="ascii-border-hero">· · · · · · · · · · · · · · · · · · · ·</div>
+    <div class="ascii-sub-hero" id="line3"></div>
+  </div>
+
+  <p class="hero-sub">
+    Track your rejections, surface your patterns, and finally understand 
+    what's actually going wrong — without the toxic positivity.
+  </p>
+
+  <div class="divided-actions">
+    <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join the waitlist</button>
+    <button class="btn-secondary" onclick="showPage('dashboard')">See a Demo →</button>
+  </div>
+</section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span>✕</span> Final round · Product company · Bangalore</span>
+      <span class="ticker-item"><span>✕</span> Ghosted after OA · 3 weeks · No response</span>
+      <span class="ticker-item"><span>✕</span> System design round · 4th time this month</span>
+      <span class="ticker-item"><span>✕</span> "We went with another candidate" · No feedback</span>
+      <span class="ticker-item"><span>✕</span> HR round · Salary mismatch · 2nd offer rejected</span>
+      <span class="ticker-item"><span>✕</span> Resume screen · Never heard back</span>
+      <span class="ticker-item"><span>✕</span> Final round · Product company · Bangalore</span>
+      <span class="ticker-item"><span>✕</span> Ghosted after OA · 3 weeks · No response</span>
+      <span class="ticker-item"><span>✕</span> System design round · 4th time this month</span>
+      <span class="ticker-item"><span>✕</span> "We went with another candidate" · No feedback</span>
+      <span class="ticker-item"><span>✕</span> HR round · Salary mismatch · 2nd offer rejected</span>
+      <span class="ticker-item"><span>✕</span> Resume screen · Never heard back</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div style="background:var(--cream); padding: 4rem 3rem;">
+    <div class="stats-section">
+      <div class="stat-block">
+        <div class="stat-num">38<em>%</em></div>
+        <div class="stat-label">die at technical round</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">21<em>%</em></div>
+        <div class="stat-label">ghosted after final</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">4.2<em>x</em></div>
+        <div class="stat-label">avg rejections before offer</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">0</div>
+        <div class="stat-label">tools tracking this. until now.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <p class="section-label">// how it works</p>
+    <h2 class="section-title">Three steps.<br><em>No fluff.</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">[ 01 ]</div>
+        <div class="step-ascii">+----------+<br>|  log it  |<br>+----------+</div>
+        <h3>Log the rejection</h3>
+        <p>Under 60 seconds. Company, round, what happened, how it felt. No judgment, no forced optimism.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">[ 02 ]</div>
+        <div class="step-ascii">+----------+<br>| patterns |<br>+----------+</div>
+        <h3>Find your patterns</h3>
+        <p>We surface what you can't see alone. "You've failed system design 4 times." Now you know what to fix.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">[ 03 ]</div>
+        <div class="step-ascii">+----------+<br>|  connect |<br>+----------+</div>
+        <h3>You're not alone</h3>
+        <p>See anonymized data from everyone going through the same thing. The wall of rejections is the most honest place on the internet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WALL PREVIEW -->
+  <section class="wall-section" id="wall">
+    <div class="wall-inner">
+      <p class="section-label">// wall of rejections</p>
+      <h2 class="section-title">Real stories.<br><em>No names.</em></h2>
+      <div class="wall-grid">
+        <div class="wall-card" data-round="✕ system design round">
+          <p>"I thought I nailed it. The interviewer was smiling throughout. Got the rejection email at 11pm. No feedback, just 'we've decided to move forward with other candidates.' I stared at my screen for twenty minutes."</p>
+          <div class="wall-card-meta">SDE-2 · Product startup · Mumbai · 14 days ago</div>
+        </div>
+        <div class="wall-card" data-round="✕ ghosted after OA">
+          <p>"Spent 4 hours on their take-home assignment. Submitted it. Three weeks of silence. I followed up twice. Still nothing. I just needed a no."</p>
+          <div class="wall-card-meta">Frontend · FinTech · Bangalore · 8 days ago</div>
+        </div>
+        <div class="wall-card" data-round="✕ final round">
+          <p>"Fifth final round this year. Fifth rejection. I'm starting to wonder if it's me or the market. Probably both."</p>
+          <div class="wall-card-meta">Product Manager · E-commerce · Delhi · 3 days ago</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section class="waitlist-section" id="waitlist">
+    <div class="waitlist-ascii">
+      - - - - - - - - - - - - - - - - - - - - - -<br>
+      you've been rejected. now track it.<br>
+      - - - - - - - - - - - - - - - - - - - - - -
+    </div>
+    <p class="section-label">// early access</p>
+    <h2 class="section-title" style="font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);color:var(--ink);">
+      Be the first to<br><em style="color:var(--terracotta)">own your rejections.</em>
+    </h2>
+    <iframe data-tally-src="https://tally.so/embed/EkZeMB?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+    width="100%"
+    height="80"
+    frameborder="0"
+    style="border: none; max-width: 520px;" title="WaitList"></iframe>
+    <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+    <p style="font-family:var(--mono);font-size:0.65rem;color:var(--muted-violet);margin-top:1rem;letter-spacing:0.05em;">
+      no spam. just updates when we launch.<span class="cursor">_</span>
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-logo"><span class="crossed">Rejection</span> OS</div>
+    <p>built in public · 2025 · by two people who got rejected a lot</p>
+    <p style="color:var(--soft-red);">@RejectionOS</p>
+  </footer>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="dashboard" class="page">
+  <div class="dashboard">
+
+    <div class="dash-header">
+      <h1 class="dash-greeting">Good morning, <em>Priya.</em></h1>
+      <p class="dash-sub">// 3 rejections logged this week · your pattern is updating<span class="cursor">_</span></p>
+    </div>
+
+    <div class="dash-body">
+      <!-- SIDEBAR -->
+      <aside class="dash-sidebar">
+        <p class="sidebar-label">// your stats</p>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num red">14</div>
+          <div class="sidebar-stat-label">total rejections</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num">6</div>
+          <div class="sidebar-stat-label">companies reached</div>
+        </div>
+        <div class="sidebar-stat">
+          <div class="sidebar-stat-num">1</div>
+          <div class="sidebar-stat-label">offers received</div>
+        </div>
+
+        <div class="pattern-box">
+          <h4>// ai patterns</h4>
+          <div class="pattern-item"><strong>6×</strong> failed at system design</div>
+          <div class="pattern-item"><strong>3×</strong> ghosted after OA</div>
+          <div class="pattern-item"><strong>Trend:</strong> Mon/Tue rejections spike</div>
+          <div class="pattern-item">Most common feedback: <strong>"culture fit"</strong></div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="dash-main">
+        <div class="dash-toolbar">
+          <h2>Your Rejections</h2>
+          <button class="btn-log" onclick="openModal()">+ Log rejection</button>
+        </div>
+
+        <div class="rejection-list">
+          <div class="rejection-card">
+            <div>
+              <div class="rc-company">Razorpay</div>
+              <div class="rc-role">SDE-2 · System Design Round</div>
+              <div class="rc-note">"I blanked on the rate limiter design. Should have practiced distributed systems more before this one."</div>
+            </div>
+            <div>
+              <div class="rc-badge badge-system">System Design</div>
+              <div class="rc-date">May 17, 2025</div>
+            </div>
+          </div>
+          <div class="rejection-card">
+            <div>
+              <div class="rc-company">Swiggy</div>
+              <div class="rc-role">Frontend Engineer · Technical Round</div>
+              <div class="rc-note">"The React performance questions caught me off guard. Knew the concepts but couldn't articulate under pressure."</div>
+            </div>
+            <div>
+              <div class="rc-badge badge-technical">Technical</div>
+              <div class="rc-date">May 12, 2025</div>
+            </div>
+          </div>
+          <div class="rejection-card">
+            <div>
+              <div class="rc-company">Meesho</div>
+              <div class="rc-role">Product Engineer · OA Stage</div>
+              <div class="rc-note">"Applied 3 weeks ago. Completed the OA same day. Still waiting. Probably ghosted at this point."</div>
+            </div>
+            <div>
+              <div class="rc-badge badge-ghosted">Ghosted</div>
+              <div class="rc-date">Apr 28, 2025</div>
+            </div>
+          </div>
+          <div class="rejection-card">
+            <div>
+              <div class="rc-company">Zepto</div>
+              <div class="rc-role">SDE-1 · HR Round</div>
+              <div class="rc-note">"Salary mismatch. They offered 30% below what I asked. Wouldn't budge. I walked away but it still stings."</div>
+            </div>
+            <div>
+              <div class="rc-badge badge-hr">HR Round</div>
+              <div class="rc-date">Apr 15, 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MOOD CHART -->
+        <div class="mood-section">
+          <div class="mood-title">// how you felt this month — self reported</div>
+          <div class="mood-bars">
+            <div class="mood-bar-wrap">
+              <div class="mood-bar" style="height:30%;background:var(--soft-red);opacity:0.4;"></div>
+              <div class="mood-bar-label">W1</div>
+            </div>
+            <div class="mood-bar-wrap">
+              <div class="mood-bar" style="height:60%;background:var(--soft-red);opacity:0.6;"></div>
+              <div class="mood-bar-label">W2</div>
+            </div>
+            <div class="mood-bar-wrap">
+              <div class="mood-bar" style="height:80%;background:var(--soft-red);opacity:0.8;"></div>
+              <div class="mood-bar-label">W3</div>
+            </div>
+            <div class="mood-bar-wrap">
+              <div class="mood-bar" style="height:45%;background:var(--muted-violet);opacity:0.7;"></div>
+              <div class="mood-bar-label">W4</div>
+            </div>
+          </div>
+          <p style="font-family:var(--mono);font-size:0.6rem;color:var(--muted-violet);margin-top:0.75rem;letter-spacing:0.05em;">
+            red = rough weeks · violet = recovering · pattern: you bounce back by week 4
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- LOG MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <h3>Log a rejection</h3>
+    <p class="modal-sub">// be honest. no one's watching.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Company</label>
+        <input type="text" class="form-input" placeholder="e.g. Flipkart">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <input type="text" class="form-input" placeholder="e.g. SDE-2">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Round it ended at</label>
+      <select class="form-select">
+        <option>Resume / Application screen</option>
+        <option>Online Assessment</option>
+        <option>Technical Round</option>
+        <option>System Design</option>
+        <option>HR Round</option>
+        <option>Final Round</option>
+        <option>Ghosted — no response</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">What happened, honestly?</label>
+      <textarea class="form-textarea" placeholder="No performance review tone. Just what actually went down."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-log" onclick="closeModal()">Log it →</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function handleWaitlist() {
+    const input = document.querySelector('.waitlist-input');
+    if (input.value && input.value.includes('@')) {
+      input.value = '';
+      input.placeholder = 'you\'re on the list. we\'ll be in touch.';
+      input.style.borderColor = 'var(--muted-violet)';
+    }
+  }
+
+    const asciiDot = document.getElementById('dot');
+  const asciiTexts = [
+    { id: 'line1', text: 'EVERY  REJECTION  IS  DATA.' },
+    { id: 'line2', text: 'STOP  LETTING  IT  JUST  HURT.' },
+    { id: 'line3', text: '// rejection-os  ·  track  ·  learn  ·  own  it' },
+  ];
+
+  asciiTexts.forEach(({ id, text }) => {
+    const el = document.getElementById(id);
+    el.innerHTML = text.split('').map(ch =>
+      `<span class="ascii-char">${ch === ' ' ? '&nbsp;' : ch}</span>`
+    ).join('');
+  });
+
+  document.addEventListener('mousemove', e => {
+    asciiDot.style.left = e.clientX + 'px';
+    asciiDot.style.top = e.clientY + 'px';
+    document.querySelectorAll('.ascii-char').forEach(ch => {
+      const r = ch.getBoundingClientRect();
+      const dist = Math.hypot(r.left + r.width/2 - e.clientX, r.top + r.height/2 - e.clientY);
+      ch.classList.toggle('lit', dist < 30);
+      ch.classList.toggle('near', dist >= 30 && dist < 80);
+    });
+  });
+</script>
+</body>
+</html>
